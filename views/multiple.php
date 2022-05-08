@@ -1,5 +1,5 @@
 
-<div class="display-inline-block border mx-auto text-center m-2 pt-2  h-100">
+<div class=" border mx-auto text-center m-2 pt-2  h-100">
     <div class="position-relative h-100  pb-5">
         <p class="fs-4 text-primary"><?php echo $args['title'];?></p>
 
