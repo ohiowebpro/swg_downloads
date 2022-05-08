@@ -15,7 +15,7 @@ include( trailingslashit(plugin_dir_path( __FILE__ )) . 'includes/init.php');
 /**
  * Set thumb image size.
  */
-add_action ('plugins_loaded', function(){
+add_action ('init', function(){
     if(function_exists('get_field')) {
         $w = get_field('thumbnail_image_width','options');
         $h = get_field('thumbnail_image_height','options');

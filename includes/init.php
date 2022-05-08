@@ -86,9 +86,9 @@ add_action( 'init', function() {
 /**
  * Init ACF Fields
  */
-add_action('acf/init', 'register_my_post_groups',200);
+add_action('acf/init', 'register_swg_downloads_post_groups');
 
-function register_my_post_groups() {
+function register_swg_downloads_post_groups() {
     //ACF Custom Fields
     if( function_exists('acf_add_local_field_group') ):
         acf_add_local_field_group(array(
