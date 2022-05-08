@@ -1,7 +1,6 @@
 <?php
 /**
  * Plugin Name: SWG Downloads
- * Plugin URI: https://stonewallgroup.com
  * Description: Simple downloader plugin
  * Version: 1.0
  * Author: Eric Griffiths
