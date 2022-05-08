@@ -164,7 +164,7 @@ function swg_downloads($atts) {
             $query = new WP_Query( $args );
             wp_reset_postdata();
             ob_start();
-            echo '<div class="row justify-content-center">';
+            echo '<div class="container"><div class="row justify-content-center">';
             if ($query->posts && count($query->posts) > 0) {
                 foreach ($query->posts as $post) {
                     echo '<div class="'.$col.'">';
@@ -172,7 +172,7 @@ function swg_downloads($atts) {
                     echo '</div>';
                 }
             }
-            echo '</div>';
+            echo '</div></div>';
             return ob_get_clean();
         }
     } else {
