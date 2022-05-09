@@ -98,8 +98,17 @@ function swg_get_temp($id,$temp='single.php',$w,$h) {
     } else {
         $url  = get_field('download_url',$id);
     }
+    $img = get_field('thumbnail',$id);
+    if (!$img && $file['mime_type'] == 'application/pdf') {
+        $pdfImg = str_ireplace('.pdf','-pdf',$file['url']).'.jpg';
+        $headChk = get_headers($pdfImg);
+        if ($headChk[0] == 'HTTP/1.1 200 OK') {
+            $img = $pdfImg;
+        }
+
+    }
     $dl['url']         =  $url;
-    $dl['thumbnail']   =  get_field('thumbnail',$id);
+    $dl['thumbnail']   =  $img;
     $dl['width']       =  $w;
     $dl['height']      =  $h;
     $dl['button_text'] =  get_field('button_text',$id);
@@ -167,7 +176,7 @@ function swg_downloads($atts) {
             echo '<div class="container"><div class="row justify-content-center">';
             if ($query->posts && count($query->posts) > 0) {
                 foreach ($query->posts as $post) {
-                    echo '<div class="'.$col.'">';
+                    echo '<div class="'.$col.' mb-4">';
                     echo swg_get_temp($post->ID,$atts['template'],$width,$height);
                     echo '</div>';
                 }
