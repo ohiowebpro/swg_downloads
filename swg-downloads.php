@@ -15,21 +15,31 @@ include( trailingslashit(plugin_dir_path( __FILE__ )) . 'includes/init.php');
 /**
  * Set thumb image size.
  */
-add_action ('init', function(){
-    if(function_exists('get_field')) {
-        $w = get_field('thumbnail_image_width','options');
-        $h = get_field('thumbnail_image_height','options');
-    }
-    if (!$w) {
-        $w = 150;
-    }
-    if (!$h) {
-        $h = 100;
-    }
-    add_image_size( 'swg_download_thumb', $w, $h, true );
-});
-
-
+//add_action ('init', function(){
+//    if(function_exists('get_field')) {
+//        $w = get_field('thumbnail_image_width','options');
+//        $h = get_field('thumbnail_image_height','options');
+//    }
+//    if (!$w) {
+//        $w = 150;
+//    }
+//    if (!$h) {
+//        $h = 100;
+//    }
+//    add_image_size( 'swg_download_thumb', $w, $h, true );
+//});
+//
+//if(function_exists('get_field')) {
+//    $w = get_field('thumbnail_image_width','options');
+//    $h = get_field('thumbnail_image_height','options');
+//}
+//if (!$w) {
+//    $w = 150;
+//}
+//if (!$h) {
+//    $h = 100;
+//}
+//add_image_size( 'swg_download_thumb', $w, $h, true );
 
 
 /**
@@ -99,14 +109,15 @@ function swg_get_temp($id,$temp='single.php',$w,$h) {
         $url  = get_field('download_url',$id);
     }
     $img = get_field('thumbnail',$id);
-    if (!$img && $file['mime_type'] == 'application/pdf') {
-        $pdfImg = str_ireplace('.pdf','-pdf',$file['url']).'.jpg';
-        $headChk = get_headers($pdfImg);
-        if ($headChk[0] == 'HTTP/1.1 200 OK') {
-            $img = $pdfImg;
-        }
 
-    }
+//    if (!$img && $file['mime_type'] == 'application/pdf') {
+//        $pdfImg = str_ireplace('.pdf','-pdf',$file['url']).'.jpg';
+//        $headChk = get_headers($pdfImg);
+//        if ($headChk[0] == 'HTTP/1.1 200 OK') {
+//            $img = $pdfImg;
+//        }
+//
+//    }
     $dl['url']         =  $url;
     $dl['thumbnail']   =  $img;
     $dl['width']       =  $w;

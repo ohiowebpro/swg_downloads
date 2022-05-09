@@ -3,9 +3,9 @@
     <div class="position-relative h-100  pb-5">
         <p class="fs-4 text-primary"><?php echo $args['title'];?></p>
 
-        <?php if ($args['thumbnail']['sizes']['swg_download_thumb']):?>
+        <?php if ($args['thumbnail']['sizes']['large']):?>
 
-            <a href="<?php echo $args['url'];?>" target="_blank"><img src="<?php echo $args['thumbnail']['sizes']['swg_download_thumb'];?>" class="mx-auto border" alt="<?php echo $args['thumbnail']['alt'];?>" width="<?php echo $args['width'];?>" height="<?php echo $args['height'];?>" /></a>
+            <a href="<?php echo $args['url'];?>" target="_blank"><img src="<?php echo $args['thumbnail']['sizes']['large'];?>" class="mx-auto border" alt="<?php echo $args['thumbnail']['alt'];?>" width="<?php echo $args['width'];?>" height="<?php echo $args['height'];?>" /></a>
 
         <?php endif ?>
 
