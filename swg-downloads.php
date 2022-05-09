@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SWG Downloads
  * Description: Simple downloader plugin
- * Version: 1.0
+ * Version: 1.0.5
  * Author: Eric Griffiths
  * Author URI: https://stonewallgroup.com
  * License: GPLv2 or later
@@ -173,6 +173,8 @@ function swg_downloads($atts) {
             $col = 'col-'.$atts['break'].'-'.floor(12 / $atts['col']);
             $args = array(
                 'post_type' => 'swg_downloads',
+                'post_status' => 'publish',
+                'posts_per_page' => -1,
                 'tax_query' => array(
                     array(
                         'taxonomy' => 'swg_download_category',
