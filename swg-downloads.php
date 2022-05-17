@@ -9,6 +9,7 @@
  * Text Domain: swg-downloads
  */
 
+
 //Load Composer
 include( trailingslashit(plugin_dir_path( __FILE__ )) . 'includes/init.php');
 
