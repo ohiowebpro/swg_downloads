@@ -1,0 +1,8 @@
+{
+  "name" : "SWG Downloads",
+  "version" : "1.0.5",
+  "download_url" : "https://stonewalldigital.com/repo/wordpress/plugins/swg_downloads/swg_downloads-v1.0.5.zip",
+  "sections" : {
+    "description" : "Simple downloader plugin by Eric Griffiths."
+  }
+}

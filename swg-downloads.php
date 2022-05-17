@@ -9,9 +9,11 @@
  * Text Domain: swg-downloads
  */
 
-
+//Load Composer
 include( trailingslashit(plugin_dir_path( __FILE__ )) . 'includes/init.php');
 
+//Load Composer
+require_once(plugin_dir_path(__FILE__) . '/lib/autoload.php');
 /**
  * Set thumb image size.
  */
@@ -228,3 +230,15 @@ function swg_downloads_custom_column ( $column, $post_id ) {
     }
 }
 add_action ( 'manage_swg_downloads_posts_custom_column', 'swg_downloads_custom_column', 10, 2 );
+
+
+
+
+add_action('plugins_loaded', function(){
+    //Setup update check
+    $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+        'https://stonewalldigital.com/repo/wordpress/plugins/swg_downloads/plugin.json',
+        __FILE__,
+        'swg-downloads'
+    );
+});
