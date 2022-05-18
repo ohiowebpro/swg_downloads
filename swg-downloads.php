@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SWG Downloads
  * Description: Simple downloader plugin
- * Version: 1.0.5
+ * Version: 1.0.7
  * Author: Eric Griffiths
  * Author URI: https://stonewallgroup.com
  * License: GPLv2 or later
