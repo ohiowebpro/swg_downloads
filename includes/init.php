@@ -10,7 +10,7 @@ add_action('admin_notices', function() {
     );
     foreach($aRequired_plugins as $aPlugin) {
         if(!is_plugin_active( $aPlugin['path'] )) {
-            $plugin_messages[] = '<div class="notice notice-error"> <p>The SWG Downloads plugin recommends you to install the <a href="/wp-admin/plugin-install.php?s='.urlencode($aPlugin['name']).'&amp;tab=search&amp;type=term">'.$aPlugin['name'].'</a> plugin.  <a target="_blank" href="'.$aPlugin['download'].'">View site.</a></p></div>';
+            $plugin_messages[] = '<div class="notice notice-error"> <p>The SWG Downloads plugin recommends you to install the '.$aPlugin['name'].' plugin.  <a target="_blank" href="'.$aPlugin['download'].'">View site.</a></p></div>';
         }
     }
     if(count($plugin_messages) > 0) {
@@ -86,6 +86,19 @@ add_action( 'init', function() {
 /**
  * Init ACF Fields
  */
+if( function_exists('acf_add_options_page') ) {
+
+    acf_add_options_page(array(
+        'page_title' 	=> 'Theme General Settings',
+        'menu_title'	=> 'Theme Settings',
+        'menu_slug' 	=> 'theme-general-settings',
+        'capability'	=> 'edit_posts',
+        'redirect'		=> false
+    ));
+
+}
+
+
 add_action('acf/init', 'register_swg_downloads_post_groups');
 
 function register_swg_downloads_post_groups() {
@@ -262,7 +275,7 @@ function register_swg_downloads_post_groups() {
                     'label' => 'SWG Download Image',
                     'name' => '',
                     'type' => 'tab',
-                    'instructions' => '',
+                    'instructions' => 'You will need to regenerate images after changing.',
                     'required' => 0,
                     'conditional_logic' => 0,
                     'wrapper' => array(
@@ -272,6 +285,23 @@ function register_swg_downloads_post_groups() {
                     ),
                     'placement' => 'left',
                     'endpoint' => 0,
+                ),
+                array(
+                    'key' => 'field_6285893275bfe',
+                    'label' => 'Notice',
+                    'name' => '',
+                    'type' => 'message',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'message' => 'You will need to regenerate images after changing the size.',
+                    'new_lines' => '',
+                    'esc_html' => 0,
                 ),
                 array(
                     'key' => 'field_626c8594c51d8',

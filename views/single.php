@@ -1,12 +1,14 @@
 
 <div class="border d-inline-block mx-auto text-center m-2 py-2 px-4">
-    <p class="fs-4 text-primary"><?php echo $args['title'];?></p>
+    <div class="position-relative h-100  pb-5">
+        <p class="fs-5 text-primary mb-2"><?php echo $args['title'];?></p>
 
-    <?php if ($args['thumbnail']['sizes']['swg_download_thumb']):?>
+        <?php if (isset($args['thumbnail'])):?>
 
-    <a href="<?php echo $args['url'];?>" target="_blank"><img src="<?php echo $args['thumbnail']['sizes']['swg_download_thumb'];?>" class="mx-auto border" alt="<?php echo $args['thumbnail']['alt'];?>" width="<?php echo $args['width'];?>" height="<?php echo $args['height'];?>" /></a>
+        <a href="<?php echo $args['url'];?>" target="_blank"><img src="<?php echo $args['thumbnail'];?>" class="mx-auto border" alt="<?php echo $args['thumbnail_alt'];?>" width="<?php echo $args['width'];?>" height="<?php echo $args['height'];?>" /></a>
 
-    <?php endif ?>
+        <?php endif ?>
 
-    <p class="mt-3 text-uppercase"><a href="<?php echo $args['url'];?>" class="btn btn-secondary" target="_blank"><?php echo $args['button_text'];?></a></p>
+        <p class="mt-3 text-uppercase position-absolute bottom-0 w-100 px-2"><a href="<?php echo $args['url'];?>" class="btn btn-secondary" target="_blank"><?php echo $args['button_text'];?></a></p>
+    </div>
 </div>

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SWG Downloads
  * Description: Simple downloader plugin
- * Version: 1.0.8
+ * Version: 1.0.9
  * Author: Eric Griffiths
  * Author URI: https://stonewallgroup.com
  * License: GPLv2 or later
@@ -11,39 +11,27 @@
 
 
 //Load Composer
-include( trailingslashit(plugin_dir_path( __FILE__ )) . 'includes/init.php');
+include( plugin_dir_path( __FILE__ ) . '/includes/init.php');
 
 //Load Composer
 require_once(plugin_dir_path(__FILE__) . '/lib/autoload.php');
+
 /**
  * Set thumb image size.
  */
-//add_action ('init', function(){
-//    if(function_exists('get_field')) {
-//        $w = get_field('thumbnail_image_width','options');
-//        $h = get_field('thumbnail_image_height','options');
-//    }
-//    if (!$w) {
-//        $w = 150;
-//    }
-//    if (!$h) {
-//        $h = 100;
-//    }
-//    add_image_size( 'swg_download_thumb', $w, $h, true );
-//});
-//
-//if(function_exists('get_field')) {
-//    $w = get_field('thumbnail_image_width','options');
-//    $h = get_field('thumbnail_image_height','options');
-//}
-//if (!$w) {
-//    $w = 150;
-//}
-//if (!$h) {
-//    $h = 100;
-//}
-//add_image_size( 'swg_download_thumb', $w, $h, true );
-
+add_action('init', function(){
+    if(function_exists('get_field')) {
+        $w = get_field('swg_thumbnail_image_width', 'options');
+        $h = get_field('swg_thumbnail_image_height', 'options');
+    }
+    if (!$w) {
+        $w = 150;
+    }
+    if (!$h) {
+        $h = 100;
+    }
+    add_image_size( 'swg_download_thumb', $w, $h, true );
+});
 
 /**
  * Add filter for admin posts
@@ -67,6 +55,9 @@ function tsm_filter_post_type_by_taxonomy() {
         ));
     };
 }
+
+
+
 add_filter('parse_query', 'tsm_convert_id_to_term_in_query');
 function tsm_convert_id_to_term_in_query($query) {
     global $pagenow;
@@ -91,8 +82,10 @@ function swg_locate_template($template) {
         $located = trailingslashit(get_stylesheet_directory()).'swg_plugins/swg_downloads/'.$template;
     } elseif (file_exists(trailingslashit(get_template_directory()).'swg_plugins/swg_downloads/'.$template)) {
         $located = trailingslashit(get_template_directory()).'swg_plugins/swg_downloads/'.$template;
-    } else {
+    } elseif (file_exists(trailingslashit(plugin_dir_path( __FILE__ )).'views/'.$template)) {
         $located = trailingslashit(plugin_dir_path( __FILE__ )).'views/'.$template;
+    } else {
+        $located = trailingslashit(plugin_dir_path( __FILE__ )).'views/single.php';
     }
     return $located;
 }
@@ -103,30 +96,21 @@ function swg_locate_template($template) {
 /**
  * Build the template
  */
-function swg_get_temp($id,$temp='single.php',$w,$h) {
+function swg_get_temp($id,$temp='single.php') {
 
-//    if (get_field('download_type',$id) == 'file') {
-//        $file = get_field('download_file',$id);
-//        $url = $file['url'];
-//    } else {
-//        $url  = get_field('download_url',$id);
-//    }
     $url = trailingslashit(get_site_url()).'swg_downloads/swg_download_id/'.$id;
-
     $img = get_field('thumbnail',$id);
 
+    $dl['url']           =  $url;
+    $dl['thumbnail']     =  $img['sizes']['swg_download_thumb'];
+    $dl['thumbnail_alt'] =  $img['alt'];
+    $dl['width']         =  $img['sizes']['swg_download_thumb-width'];
+    $dl['height']        =  $img['sizes']['swg_download_thumb-height'];
+    $dl['button_text']   =  get_field('button_text',$id);
+    $dl['title']         =  get_the_title($id);
 
-    $dl['url']         =  $url;
-    $dl['thumbnail']   =  $img;
-    $dl['width']       =  $w;
-    $dl['height']      =  $h;
-    $dl['button_text'] =  get_field('button_text',$id);
-    $dl['title']       =  get_the_title($id);
-    $dl['downloads']   =  get_field('downloads',$id); ///Not needed?
     $template = swg_locate_template($temp);
-    if (!$template) {
-        swg_locate_template('single.php');
-    }
+
     return load_template($template,false, $dl);
 }
 
@@ -138,10 +122,12 @@ function swg_get_temp($id,$temp='single.php',$w,$h) {
 /**
  * Add shortcode for 1 download or whole cat
  */
+add_action('init', 'swg_shortcodes_init');
 function swg_shortcodes_init(){
     add_shortcode('swg_downloads', 'swg_downloads');
 }
-add_action('init', 'swg_shortcodes_init');
+
+
 function swg_downloads($atts) {
     if (function_exists('get_field')) {
         $width = get_field('swg_thumbnail_image_width','options');
@@ -152,7 +138,9 @@ function swg_downloads($atts) {
                 'cat'       => '',
                 'col'      => '',
                 'template'  => '',
-                'break'     => ''
+                'break'     => '',
+                'container' => '',
+                'row_class'   => ''
             ), $atts, 'swg_downloads');
         if ($atts['id']) {
             if (!$atts['template']) {
@@ -171,6 +159,9 @@ function swg_downloads($atts) {
             if (!$atts['template']) {
                 $atts['template'] = 'multiple.php';
             }
+            if (!$atts['container']) {
+                $atts['container'] = 'container';
+            }
             $col = 'col-'.$atts['break'].'-'.floor(12 / $atts['col']);
             $args = array(
                 'post_type' => 'swg_downloads',
@@ -187,11 +178,11 @@ function swg_downloads($atts) {
             $query = new WP_Query( $args );
             wp_reset_postdata();
             ob_start();
-            echo '<div class="container"><div class="row justify-content-center">';
+            echo '<div class="'.$atts['container'].'"><div class="row '.$atts['row_class'].'">';
             if ($query->posts && count($query->posts) > 0) {
                 foreach ($query->posts as $post) {
                     echo '<div class="'.$col.' mb-4">';
-                    echo swg_get_temp($post->ID,$atts['template'],$width,$height);
+                    echo swg_get_temp($post->ID,$atts['template']);
                     echo '</div>';
                 }
             }
@@ -199,14 +190,9 @@ function swg_downloads($atts) {
             return ob_get_clean();
         }
     } else {
-        return 'Please enable ACF Pro';
+        return '<p>Please enable ACF Pro.</p>';
     }
-
 }
-
-
-
-
 
 
 
@@ -225,9 +211,6 @@ add_filter ( 'manage_swg_downloads_posts_columns', 'add_swg_downloads_columns' )
 
 
 
-
-
-
 /**
  * Add shortcode to admin posts view
  */
@@ -237,8 +220,6 @@ function swg_downloads_custom_column ( $column, $post_id ) {
     }
 }
 add_action ( 'manage_swg_downloads_posts_custom_column', 'swg_downloads_custom_column', 10, 2 );
-
-
 
 
 
@@ -282,19 +263,14 @@ function swg_pre_get_posts( $query ) {
     if ( is_admin() || ! $query->is_main_query() ){
         return;
     }
-
     $swg_download_id = get_query_var( 'swg_download_id' );
-
     // add meta_query elements
     if( !empty( $swg_download_id ) ){
 
-
         $args = array('p'=>$swg_download_id, 'post_type'=>'swg_downloads', 'limit'=> '1');
-
         $loop = new WP_Query($args);
         // Start loop for seminar posts
         $loop->the_post();
-
         $id = get_the_id();
         $count = get_field('downloads',$id);
         if (!$count || is_nan($count)) {
@@ -308,9 +284,9 @@ function swg_pre_get_posts( $query ) {
             $url = get_field('download_url',$id);
         }
 
-
         update_field('downloads', $count+1, $id);
         wp_reset_postdata();
+
         if($url) {
             wp_redirect($url);
             exit;
@@ -318,10 +294,6 @@ function swg_pre_get_posts( $query ) {
     }
 
 }
-
-
-
-
 
 
 add_action('plugins_loaded', function(){
