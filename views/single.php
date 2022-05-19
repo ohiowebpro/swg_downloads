@@ -1,7 +1,7 @@
 
 <div class="border d-inline-block mx-auto text-center m-2 py-2 px-4">
     <div class="position-relative h-100  pb-5">
-        <p class="fs-5 text-primary mb-2"><?php echo $args['title'];?></p>
+        <p class="fs-5 lh-1 text-primary mb-2"><?php echo $args['title'];?></p>
 
         <?php if (isset($args['thumbnail'])):?>
 
