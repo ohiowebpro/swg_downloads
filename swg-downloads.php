@@ -14,11 +14,9 @@
  *  TODO: Show count number in list
 */
 
-//Load Composer
+
 include( plugin_dir_path( __FILE__ ) . '/includes/init.php');
 
-//Load Composer
-require_once(plugin_dir_path(__FILE__) . '/lib/autoload.php');
 
 /**
  * Set thumb image size.
@@ -305,14 +303,3 @@ add_action( 'pre_get_posts', function($query){
         }
     }
 }, 1 );
-
-
-
-add_action('plugins_loaded', function(){
-    //Setup update check
-    $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-        'https://stonewalldigital.com/repo/wordpress/plugins/swg_downloads/plugin.json',
-        __FILE__,
-        'swg-downloads'
-    );
-});
