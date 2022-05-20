@@ -99,9 +99,7 @@ if( function_exists('acf_add_options_page') ) {
 }
 
 
-add_action('acf/init', 'register_swg_downloads_post_groups');
-
-function register_swg_downloads_post_groups() {
+add_action('acf/init', function(){
     //ACF Custom Fields
     if( function_exists('acf_add_local_field_group') ):
         acf_add_local_field_group(array(
@@ -364,4 +362,4 @@ function register_swg_downloads_post_groups() {
         ));
 
     endif;
-}
+});
