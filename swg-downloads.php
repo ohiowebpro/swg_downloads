@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SWG Downloads
  * Description: Simple downloader based on ACF and Bootstrap intended for WordPress theme developers
- * Version: 1.0.9
+ * Version: 1.0.10
  * Author: Eric Griffiths
  * Author URI: https://stonewallgroup.com
  * License: GPLv2 or later
